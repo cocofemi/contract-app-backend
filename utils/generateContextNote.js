@@ -53,8 +53,15 @@ async function generateContextNote({ answers, contactSnapshot }) {
   const messages = [
     {
       role: "system",
-      content:
-        "You are a professional assistant writing a summary for a financial advisor. The output should be in plain sentences, no bullet points or asterisks. Use clear, concise, and formal language. Avoid list formatting.Summarize what this person cares about based on the answers and known context. Avoid repeating the questions. Focus on financial themes or concerns.",
+      content: `
+       You are an intelligent assistant summarizing a person's recent input. Use clear, professional sentences. Do not use bullet points, headings, or lists. Your goal is to extract what this person cares about based on their answers, and if relevant, connect their statements to known context.
+
+If any context is related, briefly mention it in the summary as a natural extension of their answer. Do not repeat the question that was asked. Be concise, insightful, and write in a natural tone.
+
+Avoid generic summaries — focus on personal insights or themes that emerge.
+
+Do not use phrases like "The user said" or "In response to the question."
+       `,
     },
     {
       role: "user",

@@ -4,7 +4,14 @@ require("dotenv").config({ path: "../.env" });
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 
-async function meetingEmail(email, linkedinUrl, answers, time, augmented) {
+async function meetingEmail(
+  email,
+  linkedinUrl,
+  answers,
+  time,
+  date,
+  augmented
+) {
   const template = await ejs.renderFile(
     path.join(__dirname, "../views/bookingEmail.ejs"),
     {
@@ -12,6 +19,7 @@ async function meetingEmail(email, linkedinUrl, answers, time, augmented) {
       linkedinUrl,
       answers,
       time,
+      date,
       augmented,
     }
   );

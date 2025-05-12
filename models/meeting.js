@@ -16,6 +16,7 @@ const meetingSchema = new mongoose.Schema(
     linkedin: { type: String, default: "" },
     answers: [String],
     scheduledTime: { type: String, required: true }, // can be ISO or "10:30 AM"
+    scheduledDate: { type: String, required: true },
     augmentedNotes: { type: String, default: null },
     source: {
       type: String,

@@ -9,7 +9,15 @@ const { scrapeLinkedinMeta } = require("../utils/scrapeLinkedinMeta");
 const { refreshHubspotToken } = require("../utils/refreshHubspotToken");
 
 const createMeeting = async (req, res) => {
-  const { userId, linkId, email, linkedin, answers, scheduledTime } = req.body;
+  const {
+    userId,
+    linkId,
+    email,
+    linkedin,
+    answers,
+    scheduledTime,
+    scheduledDate,
+  } = req.body;
 
   if (!email || !scheduledTime) {
     return res
@@ -25,6 +33,7 @@ const createMeeting = async (req, res) => {
       linkedin,
       answers,
       scheduledTime,
+      scheduledDate,
     });
 
     await meeting.save();
@@ -90,6 +99,7 @@ const createMeeting = async (req, res) => {
       linkedin,
       answers,
       scheduledTime,
+      scheduledDate,
       augmented
     );
 

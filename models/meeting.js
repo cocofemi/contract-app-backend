@@ -5,7 +5,7 @@ const meetingSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
     linkId: {
       type: mongoose.Schema.Types.ObjectId,

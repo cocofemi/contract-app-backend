@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Meeting = require("../models/meeting");
 const sendMail = require("../services/sendEmail");
 const SchedulingLink = require("../models/scheduleLink");
+const mongoose = require("mongoose");
 const { getHubspotContactByEmail } = require("../utils/getHubspotContact");
 const { generateContextNote } = require("../utils/generateContextNote");
 const { scrapeLinkedinMeta } = require("../utils/scrapeLinkedinMeta");
@@ -10,7 +11,7 @@ const { refreshHubspotToken } = require("../utils/refreshHubspotToken");
 const createMeeting = async (req, res) => {
   const { userId, linkId, email, linkedin, answers, scheduledTime } = req.body;
 
-  if (!userId || !linkId || !email || !scheduledTime) {
+  if (!email || !scheduledTime) {
     return res
       .status(400)
       .json({ success: false, message: "Missing required fields." });
@@ -103,15 +104,43 @@ const getMeetings = async (req, res) => {
   const { userId } = req.query;
 
   if (!userId) {
-    return res.status(400).json({ success: false, message: "Missing userId" });
+    return res.status(400).json({
+      success: false,
+      message: "Missing userId",
+    });
   }
 
   try {
-    const meetings = await Meeting.find({ userId }).sort({ createdAt: -1 });
-    res.json({ success: true, data: meetings });
-  } catch (err) {
-    console.error("Error fetching meetings:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    const meetings = await Meeting.aggregate([
+      {
+        $lookup: {
+          from: "schedulinglinks",
+          localField: "linkId",
+          foreignField: "_id",
+          as: "link",
+        },
+      },
+      { $unwind: "$link" },
+      {
+        $match: {
+          "link.userId": new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $project: {
+          link: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      data: meetings,
+    });
+  } catch (error) {
+    console.error("Error fetching meetings:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

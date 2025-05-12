@@ -46,7 +46,7 @@ app.use("/contract-app/v1", eventRoutes);
 app.use("/contract-app/v1", meetingRoutes);
 app.use("/contract-app/v1", scheduleWindowRoutes);
 
-cron.schedule("*/15 * * * *", async () => {
+cron.schedule("*/13 * * * *", async () => {
   try {
     const response = await axios.get(
       "https://contract-app-backend.onrender.com"

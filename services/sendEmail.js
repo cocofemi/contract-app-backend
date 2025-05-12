@@ -6,7 +6,7 @@ const ejs = require("ejs");
 
 async function meetingEmail(email, linkedinUrl, answers, time, augmented) {
   const template = await ejs.renderFile(
-    path.join(__dirname, "../views/registrationOtpEmail.ejs"),
+    path.join(__dirname, "../views/bookingEmail.ejs"),
     {
       email,
       linkedinUrl,

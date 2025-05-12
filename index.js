@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const axios = require("axios");
 const path = require("path");
+const cron = require("node-cron");
 const express = require("express");
 const Cors = require("cors");
 var bodyParser = require("body-parser");
@@ -44,3 +45,14 @@ app.use("/contract-app/v1", authRoutes);
 app.use("/contract-app/v1", eventRoutes);
 app.use("/contract-app/v1", meetingRoutes);
 app.use("/contract-app/v1", scheduleWindowRoutes);
+
+cron.schedule("*/15 * * * *", async () => {
+  try {
+    const response = await axios.get(
+      "https://contract-app-backend.onrender.com"
+    );
+    console.log(`Health check response: ${response.status}`);
+  } catch (error) {
+    console.error(`Health check error: ${error.message}`);
+  }
+});

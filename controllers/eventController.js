@@ -74,12 +74,12 @@ const googleRedirectUrl = async (req, res) => {
       });
       await connectedAccounts.save();
     }
-    res.redirect("http://localhost:3000/dashboard");
+    res.redirect(process.env.SUCCESS_URI);
 
     // Save tokens.access_token and tokens.refresh_token
   } catch (err) {
     console.error("OAuth error:", err);
-    res.redirect("http://localhost:3000/404");
+    res.redirect(process.env.NOT_FOUND_URI);
   }
 };
 
@@ -260,7 +260,7 @@ const hubspotCallback = async (req, res) => {
 
     console.log(updateHubspot);
 
-    res.redirect("http://localhost:3000/dashboard/account/add-hubspot");
+    res.redirect(process.env.HUBSPOT_SUCCESS_URI);
   } catch (err) {
     console.error("HubSpot OAuth error:", err.response?.data || err.message);
     res.status(500).send("OAuth failed");

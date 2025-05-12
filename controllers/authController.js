@@ -35,7 +35,7 @@ const googleLogin = async (req, res) => {
     let user = await User.findOne({ googleId });
 
     if (!user) {
-      // ✅ First-time user
+      // First-time user
       user = await User.create({
         googleId,
         email,
@@ -44,7 +44,7 @@ const googleLogin = async (req, res) => {
         profilePicture: picture,
       });
     } else {
-      // ✅ Returning user: Refresh access token if possible
+      // Returning user: Refresh access token if possible
       if (user.refreshToken) {
         const newTokens = await refreshGoogleAccessToken(user.refreshToken);
 
@@ -58,7 +58,7 @@ const googleLogin = async (req, res) => {
 
     return res.status(200).json(formatUserResponse(user));
   } catch (error) {
-    console.error("❌ Google login error:", error.message || error);
+    console.error("Google login error:", error.message || error);
     return res.status(401).json({ success: false, message: "Invalid token" });
   }
 };

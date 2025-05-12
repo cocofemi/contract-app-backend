@@ -20,8 +20,9 @@ const baseURL = process.env.PUBLIC_BASE_URL || "http://localhost:9000";
 dbConnect();
 
 const corsOption = {
-  origin: "*",
+  origin: "https://contract-app-client-4d64.vercel.app",
   optionsSuccessStatus: 200,
+  credentials: true,
 };
 
 app.use(Cors(corsOption));

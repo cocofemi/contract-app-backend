@@ -46,11 +46,11 @@ const createMeeting = async (req, res) => {
       const newToken = await refreshHubspotToken(refreshToken);
 
       if (newToken?.access_token) {
-        // ✅ Update DB
+        // Update DB
         advisor.hubspot[0].accessToken = newToken.access_token;
         await advisor.save();
 
-        // 🔁 Retry
+        // Retry
         accessToken = newToken.access_token;
         hubspotContact = await getHubspotContactByEmail(email, accessToken);
       }
@@ -124,6 +124,11 @@ const getMeetings = async (req, res) => {
       {
         $match: {
           "link.userId": new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $addFields: {
+          slug: "$link.slug", // ✅ bring slug into root
         },
       },
       {

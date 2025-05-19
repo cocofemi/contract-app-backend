@@ -49,6 +49,7 @@ const createMeeting = async (req, res) => {
 
     if (accessToken) {
       hubspotContact = await getHubspotContactByEmail(email, accessToken);
+      console.log(hubspotContact);
     }
 
     if (!hubspotContact && refreshToken) {
